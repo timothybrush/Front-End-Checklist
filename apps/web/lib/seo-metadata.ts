@@ -11,7 +11,7 @@ export const siteConfig = {
     url: SOCIAL.authorUrl,
     twitter: SOCIAL.authorHandle
   },
-  ogImage: '/og-image.jpg',
+  ogImage: '/og-image.png',
   links: {
     github: GITHUB_REPO_URL,
     twitter: SOCIAL.twitter
@@ -63,12 +63,21 @@ export const baseMetadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     creator: siteConfig.author.twitter,
-    site: siteConfig.author.twitter
+    site: siteConfig.author.twitter,
+    images: [`${siteConfig.url}${siteConfig.ogImage}`]
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: siteConfig.name
+    siteName: siteConfig.name,
+    images: [
+      {
+        url: `${siteConfig.url}${siteConfig.ogImage}`,
+        width: 1200,
+        height: 630,
+        alt: siteConfig.name
+      }
+    ]
   }
 }
 

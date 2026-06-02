@@ -1,5 +1,5 @@
 /**
- * Generates Claude Code skills from rule MDX frontmatter.
+ * Generates agent skills from rule MDX frontmatter.
  *
  * Each rule becomes a skills/{category}/{slug}/ directory with:
  *   SKILL.md          — name, description, prompts as instructions

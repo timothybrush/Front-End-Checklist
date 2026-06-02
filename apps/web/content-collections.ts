@@ -136,7 +136,7 @@ const ruleSchema = z.object({
   // Learning paths
   learningPath: z.record(z.string(), z.number().nullable()).optional(),
 
-  // AI prompts (existing + enhanced)
+  // Rule prompts
   prompts: z
     .object({
       check: z.string(),
@@ -146,7 +146,7 @@ const ruleSchema = z.object({
     })
     .optional(),
 
-  // AI context — one-sentence "when this rule applies" for AI agents (not shown in UI)
+  // Rule application context (not shown in UI)
   aiContext: z.string().optional(),
 
   // TL;DR quick summary bullets

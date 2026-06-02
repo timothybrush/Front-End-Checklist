@@ -409,7 +409,7 @@ export function executeGetRule(input: GetRuleInput, rules: Rule[]): GetRuleOutpu
     response.url = rule.url
   }
 
-  // Surface aiContext if present (machine metadata for AI agents)
+  // Surface aiContext if present for automated review contexts.
   const aiContext = getOptionalStringProp(rule, 'aiContext')
   if (aiContext) {
     response.aiContext = aiContext

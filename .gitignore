@@ -63,7 +63,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# AI
+# Local tooling state
 .claude
 .skills-lock.json
 .agents/skills/

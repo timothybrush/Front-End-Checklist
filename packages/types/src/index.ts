@@ -147,7 +147,7 @@ export interface Rule {
   priority: Priority
   prompts?: RulePrompts
   relatedRules?: RelatedRuleRef[] // Related rules defined in frontmatter
-  aiContext?: string // One-sentence "when this rule applies" for AI agents
+  aiContext?: string // One-sentence context for when this rule applies.
   tools?: RuleTool[]
   sources?: RuleSource[]
   sourceSummary?: RuleSourceSummary

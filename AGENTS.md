@@ -1,10 +1,10 @@
 # AGENTS.md — Front-End Checklist
 
-Project rules and conventions for AI coding agents (Claude Code, Cursor, GitHub Copilot, Windsurf).
+Repository rules and conventions for contributors and automation tools.
 
 ## Project Overview
 
-**Front-End Checklist** is an open-source monorepo providing 385 quality-gated frontend best practice rules with an MCP server for AI agent integration.
+**Front-End Checklist** is an open-source monorepo providing 385 quality-gated frontend best practice rules with an MCP server for structured review workflows.
 
 - **MCP Server**: `https://mcp.frontendchecklist.io` (11 tools)
 - **Rules**: `packages/content/rules/en/<category>/<slug>.mdx`
@@ -12,9 +12,9 @@ Project rules and conventions for AI coding agents (Claude Code, Cursor, GitHub 
 - **MCP Package**: `packages/mcp/` (TypeScript)
 - **Package Manager**: pnpm (workspaces + Turborepo)
 
-## Agent MCP Usage
+## MCP Usage
 
-When working on frontend implementation, review, debugging, or audit tasks, actively discover and use the Front-End Checklist MCP server instead of relying only on generic frontend knowledge.
+When working on frontend implementation, review, debugging, or audit tasks, use the Front-End Checklist MCP server when available so recommendations stay grounded in the project rule corpus.
 
 - Use `review_code` first for pasted or inspected HTML, CSS, JavaScript, TypeScript, React, or Next.js code.
 - Use `search_rules` before making accessibility, performance, SEO, security, image, privacy, i18n, or testing recommendations.
@@ -54,9 +54,9 @@ priority: 'high'               # 'critical' | 'high' | 'medium' | 'low'
 difficulty: 'beginner'         # 'beginner' | 'intermediate' | 'advanced' | 'expert'
 estimatedTime: 15              # Minutes as integer
 prompts:
-  check: "Prompt asking the AI to check for this issue"
-  fix: "Prompt asking the AI to fix the issue"
-  explain: "Prompt asking the AI to explain why this rule matters"
+  check: "Prompt for checking whether the implementation follows this rule"
+  fix: "Prompt for fixing the issue"
+  explain: "Prompt for explaining why this rule matters"
 ---
 ```
 
@@ -90,7 +90,7 @@ tools:
 tags: ['wcag', 'performance']
 prompts:
   codeReview: "Recommended prompt for systematic code review context"
-aiContext: "Additional context for AI agents about nuances of this rule"
+aiContext: "Additional context for automated review about when this rule applies"
 ```
 
 Authoring placement rules:
@@ -164,7 +164,7 @@ Use explicit thresholds whenever the rule is measurable:
 - SEO and crawling states (indexability, status codes, canonical-url behavior)
 - Security headers and transport requirements
 
-Prefer “how to verify” guidance over generic advice. A strong rule should tell an engineer or agent exactly how to confirm the rule passes.
+Prefer “how to verify” guidance over generic advice. A strong rule should tell an engineer exactly how to confirm the rule passes.
 
 ### Common Mistakes to Avoid
 
@@ -207,7 +207,7 @@ Rules are scored automatically via `pnpm score:rules` (100-point base score plus
 | Prompts (`check`/`fix`/`explain`) | 24 | All 3 prompts are specific and non-generic |
 | TLDR bullets | 4 | 3+ actionable bullets |
 | Why it matters | 4 | Explains user, business, or operational impact |
-| AI context | 6 | Tells an agent where and when the rule applies |
+| AI context | 6 | Captures where and when the rule applies in automated reviews |
 | Related rules | 6 | Links adjacent rules with clear reasons |
 | Sources | 10 | Includes authoritative references |
 | Resources / tools | 6 | Includes useful supporting docs or tools |
@@ -265,7 +265,7 @@ Tool definition shape:
 ```typescript
 export const myToolDefinition = {
   name: 'my_tool',
-  description: '...',  // Critical for AI discoverability — be specific
+  description: '...',  // Critical for tool discoverability — be specific
   inputSchema: {
     type: 'object' as const,
     properties: { ... },

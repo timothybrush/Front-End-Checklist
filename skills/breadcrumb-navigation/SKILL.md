@@ -19,7 +19,7 @@ Proper breadcrumb markup helps screen reader users understand site hierarchy and
 - Use nav element with aria-label='Breadcrumb'
 - Use ordered list (ol) for semantic structure
 - Mark current page with aria-current='page'
-- Add structured data for SEO benefits
+- Keep any structured data aligned with the visible breadcrumb trail
 
 ## Check
 

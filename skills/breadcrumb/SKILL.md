@@ -16,8 +16,8 @@ Breadcrumbs help search engines understand your site's structure and often appea
 
 ## Quick Reference
 
-- Add `BreadcrumbList` structured data to all pages except the homepage
-- Ensure the breadcrumb path matches the site's logical hierarchy
+- Add `BreadcrumbList` structured data only when the page has a visible, meaningful breadcrumb trail
+- Ensure the breadcrumb path matches the visible trail and the site's logical hierarchy
 - Use JSON-LD to mark up each item in the breadcrumb trail correctly
 
 ## Check

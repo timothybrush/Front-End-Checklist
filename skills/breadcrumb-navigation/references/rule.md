@@ -5,16 +5,13 @@
 **Priority:** medium · **Difficulty:** beginner · **Time:** 15 min
 
 ---
-Accessible breadcrumbs help users understand their location within the site hierarchy.
+Accessible breadcrumbs help users understand their location within the site hierarchy. The first breadcrumb does not have to be `Home`; include a homepage item only when it is part of the visible breadcrumb trail and site hierarchy.
 
 ## Code Example
 
 ```html
 <nav aria-label="Breadcrumb" class="breadcrumb">
   <ol>
-    <li>
-      <a href="/">Home</a>
-    </li>
     <li>
       <a href="/products">Products</a>
     </li>
@@ -30,7 +27,7 @@ Accessible breadcrumbs help users understand their location within the site hier
 
 ## Why It Matters
 
-Proper breadcrumb markup helps screen reader users understand site hierarchy and their current location, while also improving SEO through structured data.
+Proper breadcrumb markup helps screen reader users understand site hierarchy and their current location, while also improving SEO when structured data accurately mirrors the visible trail.
 
 ## Accessibility Requirements
 
@@ -40,6 +37,13 @@ Proper breadcrumb markup helps screen reader users understand site hierarchy and
 | List structure | Ordered list (`<ol>`) |
 | Current page | `aria-current="page"` |
 | Separators | CSS or `aria-hidden` text |
+| Home item | Optional; include only when it is visible and meaningful |
+
+## SEO Requirements
+
+- Keep visible breadcrumbs and `BreadcrumbList` JSON-LD in the same order with the same labels.
+- Do not emit `BreadcrumbList` schema for a homepage, landing page, or hub page with only one meaningful breadcrumb item.
+- Use global navigation, the site logo, or a separate home control for homepage access when `Home` is not part of the breadcrumb trail.
 
 ## React Breadcrumb Component
 
@@ -132,7 +136,7 @@ interface BreadcrumbProps {
         </ol>
       </nav>
 
-      {/* Structured data for SEO */}
+      {/* Structured data for SEO; keep this aligned with the visible trail. */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
@@ -166,9 +170,7 @@ const pathLabels: PathConfig = {
     href: '/' + segments.slice(0, index + 1).join('/'),
   }))
 
-  // Add home at the beginning
-  items.unshift({ label: 'Home', href: '/' })
-
+  // Add a Home item here only if the visible breadcrumb trail includes it.
   return 
 }
 ```
@@ -178,12 +180,12 @@ const pathLabels: PathConfig = {
 ```tsx
 interface BreadcrumbProps {
   items: BreadcrumbItem[]
-  homeIcon?: React.ReactNode
+  leadingIcon?: React.ReactNode
   separator?: React.ReactNode
 }
 
   items,
-  homeIcon = '🏠',
+  leadingIcon,
   separator = '/'
 }: BreadcrumbProps) {
   return (
@@ -207,12 +209,12 @@ interface BreadcrumbProps {
                 </span>
               ) : (
                 <a href={item.href} className="breadcrumb__link">
-                  {isFirst && homeIcon && (
+                  {isFirst && leadingIcon && (
                     <span aria-hidden="true" className="breadcrumb__icon">
-                      {homeIcon}
+                      {leadingIcon}
                     </span>
                   )}
-                  {isFirst && homeIcon ? (
+                  {isFirst && leadingIcon ? (
                     <span className="sr-only">{item.label}</span>
                   ) : (
                     item.label
@@ -319,7 +321,6 @@ interface BreadcrumbProps {
 <!-- Don't link the current page -->
 <nav aria-label="Breadcrumb">
   <ol>
-    <li><a href="/">Home</a></li>
     <li><a href="/products">Products</a></li>
     <li><span aria-current="page">Laptops</span></li>
   </ol>
@@ -328,8 +329,6 @@ interface BreadcrumbProps {
 <!-- With separators hidden from screen readers -->
 <nav aria-label="Breadcrumb">
   <ol>
-    <li><a href="/">Home</a></li>
-    <li aria-hidden="true">/</li>
     <li><a href="/products">Products</a></li>
     <li aria-hidden="true">/</li>
     <li><span aria-current="page">Laptops</span></li>
@@ -344,7 +343,9 @@ interface BreadcrumbProps {
 3. Confirm current page is announced
 4. Check all links are keyboard focusable
 5. Verify separators aren't announced
-6. Test structured data with Rich Results Test
-7. Check responsive behavior on small screens
+6. Verify any `BreadcrumbList` JSON-LD matches the visible breadcrumb items
+7. Avoid one-item breadcrumb schema on flat, landing, or hub pages
+8. Test structured data with Rich Results Test
+9. Check responsive behavior on small screens
 
 The current page in breadcrumbs should not be a link—it should be plain text with `aria-current="page"`. Linking to the current page creates confusion.

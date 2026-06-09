@@ -344,6 +344,33 @@ export async function GET(request: Request) {
   }
 
   if (isTransportGetRequest(request)) {
+    const clientIp = getClientIp(request)
+    const rateLimitResult = await checkRateLimit(clientIp)
+
+    if (!rateLimitResult.success) {
+      const retryAfter = Math.ceil((rateLimitResult.reset - Date.now()) / 1000)
+      return new Response(
+        JSON.stringify({
+          jsonrpc: '2.0',
+          id: null,
+          error: {
+            code: -32000,
+            message: 'Rate limit exceeded',
+            data: `Try again in ${retryAfter} seconds`
+          }
+        }),
+        {
+          status: 429,
+          headers: {
+            ...createCorsHeaders(request),
+            ...createRateLimitHeaders(rateLimitResult),
+            'Retry-After': String(retryAfter),
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+    }
+
     try {
       return withRouteHeaders(
         request,
@@ -357,7 +384,8 @@ export async function GET(request: Request) {
               : undefined,
             telemetryEnabled: !MCP_TELEMETRY_DISABLED
           }
-        )
+        ),
+        rateLimitResult
       )
     } catch (error) {
       captureServerException(error, {
